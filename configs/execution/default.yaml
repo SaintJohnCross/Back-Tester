@@ -1,0 +1,11 @@
+execution:
+  logging: minimal
+  data_mode: production
+  run_scale: full
+  compute_mode: single
+  rate_limit: aggressive
+  validation: strict
+  env_dependency: locked
+  caching: none
+  refresh_policy: cache
+  error_policy: fail_fast

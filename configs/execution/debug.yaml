@@ -1,0 +1,11 @@
+execution:
+  logging: maximal
+  data_mode: dummy
+  run_scale: smoke
+  compute_mode: single
+  rate_limit: conservative
+  validation: strict
+  env_dependency: free
+  caching: none
+  refresh_policy: refresh
+  error_policy: fail_fast
