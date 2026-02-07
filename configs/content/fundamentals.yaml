@@ -1,0 +1,6 @@
+content:
+  protocol: fundamentals
+  datasource: dummy
+  calculation_type: none
+  currency: USD
+  update_frequency: annual
