@@ -1,0 +1,9 @@
+universe:
+  name: us_smoke
+  description: A smoke test universe for US equities.
+  symbols:
+    - AAPL
+    - MSFT
+    - GOOGL
+    - AMZN
+    - TSLA
