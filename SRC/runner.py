@@ -4,6 +4,7 @@ import argparse
 import yaml
 
 from config import load_config
+from validation import validate_config, ConfigError
 
 def parse_args() -> argparse.Namespace:
     """
@@ -21,6 +22,13 @@ def main() -> int:
     config = load_config(args.universe, args.content, args.execution)
     print(yaml.safe_dump(config, sort_keys=False))
     # we return 0 to indicate successful execution. Apparently unix did this to us.
+
+    try:
+        validate_config(config)
+    except ConfigError as e:
+        print(f"[CONFIG ERROR] {e}")
+        raise SystemExit(2)
+
     return 0
 
 if __name__ == "__main__":
