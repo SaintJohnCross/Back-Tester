@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import argparse
 import yaml
+from pathlib import Path
 
-from config import load_config
-from validation import validate_config, ConfigError
+from SRC.config import load_config
+from SRC.validation import validate_config, ConfigError
+from SRC.run_context import RunContext
 
 def parse_args() -> argparse.Namespace:
     """
@@ -28,6 +30,15 @@ def main() -> int:
     except ConfigError as e:
         print(f"[CONFIG ERROR] {e}")
         raise SystemExit(2)
+
+    outputs_root = Path("outputs")
+    run_context = RunContext.create(config, outputs_root)
+
+    with open(run_context.output_dir / "config.yaml", "w", encoding="utf-8") as f:
+        yaml.safe_dump(config, f, sort_keys=False)
+
+    print(f"[OK] Run created: {run_context.run_id}")
+    print(f"[OK] Output dir: {run_context.output_dir}")
 
     return 0
 
