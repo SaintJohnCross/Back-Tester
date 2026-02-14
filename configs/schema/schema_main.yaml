@@ -1,0 +1,52 @@
+version: 1
+name: schema_main
+
+conventions:
+  currency_standard: ISO4217          
+  period_end_format: YYYY-MM-DD
+  capex_outflow_sign: negative        
+  units: base                         
+  naming: snake_case                  
+
+enums:
+  period_type: [annual, quarterly, ttm]
+  statement_type: [balance_sheet, income_statement, cash_flow_statement]
+
+common_fields:
+  symbol:      {type: str}
+  period_end:  {type: date}
+  period_type: {type: enum, enum: period_type}
+  currency:    {type: str}
+  source:      {type: str}
+
+statements:
+  balance_sheet:
+    fields:
+      cash_and_equivalents: {type: number}
+      total_assets:         {type: number}
+      total_liabilities:    {type: number}
+      total_equity:         {type: number}
+      total_debt:           {type: number}
+
+  income_statement:
+    fields:
+      revenue:            {type: number}
+      cost_of_goods_sold: {type: number}
+      gross_profit:       {type: number}
+      operating_expenses: {type: number}
+      operating_income:   {type: number}
+      net_income:         {type: number}
+
+  cash_flow_statement:
+    fields:
+      cfo:             {type: number}
+      capex:           {type: number, sign: negative_outflow}
+      free_cash_flow:  {type: number, derived: "cfo + capex"}
+
+# Requirement profiles: policy layer (changes per method/use-case)
+requirements:
+  debug_strict:
+    common: [symbol, period_end, period_type, currency, source]
+    balance_sheet: [cash_and_equivalents, total_assets, total_liabilities, total_equity, total_debt]
+    income_statement: [revenue, operating_income, net_income, cost_of_goods_sold, gross_profit, operating_expenses]
+    cash_flow_statement: [cfo, capex]
