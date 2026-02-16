@@ -9,3 +9,4 @@ execution:
   caching: none
   refresh_policy: refresh
   error_policy: fail_fast
+  schema_profile: debug_strict

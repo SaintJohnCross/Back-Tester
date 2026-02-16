@@ -9,3 +9,4 @@ execution:
   caching: local_disk
   refresh_policy: refresh_on_missing
   error_policy: best_effort
+  schema_profile: debug_strict

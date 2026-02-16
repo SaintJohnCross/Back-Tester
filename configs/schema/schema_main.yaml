@@ -50,3 +50,8 @@ requirements:
     balance_sheet: [cash_and_equivalents, total_assets, total_liabilities, total_equity, total_debt]
     income_statement: [revenue, operating_income, net_income, cost_of_goods_sold, gross_profit, operating_expenses]
     cash_flow_statement: [cfo, capex]
+  lenient:
+    common: [symbol, period_end, period_type, currency, source]
+    balance_sheet: [cash_and_equivalents, total_assets, total_liabilities, total_equity, total_debt]
+    income_statement: [revenue, operating_income, net_income, cost_of_goods_sold, gross_profit, operating_expenses]
+    cash_flow_statement: [cfo, capex]

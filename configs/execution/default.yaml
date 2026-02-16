@@ -9,3 +9,4 @@ execution:
   caching: none
   refresh_policy: cache
   error_policy: fail_fast
+  schema_profile: lenient
