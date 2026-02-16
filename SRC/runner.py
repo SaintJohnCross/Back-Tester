@@ -7,6 +7,8 @@ from pathlib import Path
 from SRC.config import load_config
 from SRC.validation import validate_config, ConfigError
 from SRC.run_context import RunContext
+from SRC.schema_registry import SchemaRegistry
+from SRC.providers.dummy_fundamentals import DummyFundamentalsProvider, write_statement_csv
 
 def parse_args() -> argparse.Namespace:
     """
@@ -33,6 +35,27 @@ def main() -> int:
 
     outputs_root = Path("outputs")
     run_context = RunContext.create(config, outputs_root)
+
+    # load schema registry
+    repo_root = Path(".").resolve()
+    registry = SchemaRegistry.load(repo_root)
+
+    symbols = run_context.config["universe"]["symbols"]
+    provider = DummyFundamentalsProvider()
+    bundle = provider.fetch(symbols) # in essense, created the basecase dummy variables
+
+    # validate + write artifacts
+    profile = "debug_strict"
+
+    for statement_name, records in bundle.items():
+        for record in records:
+            missing = registry.validate_record(profile, statement_name, record)
+            if missing:
+                raise SystemExit(f"[SCHEMA ERROR] {statement_name} missing {missing} in record: {record}")
+        
+        out_path = write_statement_csv(run_context.output_dir, statement_name, records)
+        print(f"[OK] Wrote {statement_name}: {out_path}")
+
 
     with open(run_context.output_dir / "config.yaml", "w", encoding="utf-8") as f:
         yaml.safe_dump(config, f, sort_keys=False)
